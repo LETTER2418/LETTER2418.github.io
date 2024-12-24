@@ -1,0 +1,32 @@
+/* 导航栏做居中处理 */
+#nav .menus_items {
+  position: absolute;
+  width: fit-content;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 25px;
+}
+
+/*子菜单居中*/
+/* #nav .menus_items .menus_item:hover .menus_item_child{
+  display: flex;
+} */
+
+/* 去除导航栏选项中底下的蓝条 */
+#nav *::after{
+  background-color: transparent!important;
+}
+
+/* 导航栏菜单鼠标移入字体放大 */
+#nav #site-name:hover, 
+#nav .menus_item:hover, 
+#nav #search-button:hover{
+  font-size:30px;
+}
+
+/* 排除搜索按钮，鼠标移入时不放大字体 */
+#nav #search-button:hover {
+  font-size: inherit; /* 保持原有字体大小 */
+}
+
+ 
