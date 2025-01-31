@@ -1,0 +1,395 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>聚类模型 | 星の旅</title><meta name="author" content="LETTTER"><meta name="copyright" content="LETTTER"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="聚类模型K-means 聚类 K-Means聚类是一种常用的无监督学习算法，用于将数据集划分为K个簇（cluster）。其目标是将相似的数据点分配到同一个簇中，同时使不同簇之间的数据点尽可能不同。 基本步骤  初始化 选择K个初始聚类中心（centroid），可以随机选择数据集中的K个点，或通过其他方法初始化。  分配数据点 对于每个数据点，计算其与K个聚类中心的距离（通常使用欧氏距离），并将其分">
+<meta property="og:type" content="article">
+<meta property="og:title" content="聚类模型">
+<meta property="og:url" content="https://github.com/LETTER2418.github.io/posts/5.html">
+<meta property="og:site_name" content="星の旅">
+<meta property="og:description" content="聚类模型K-means 聚类 K-Means聚类是一种常用的无监督学习算法，用于将数据集划分为K个簇（cluster）。其目标是将相似的数据点分配到同一个簇中，同时使不同簇之间的数据点尽可能不同。 基本步骤  初始化 选择K个初始聚类中心（centroid），可以随机选择数据集中的K个点，或通过其他方法初始化。  分配数据点 对于每个数据点，计算其与K个聚类中心的距离（通常使用欧氏距离），并将其分">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.com/LETTER2418.github.io/img/background.jpg">
+<meta property="article:published_time" content="2024-12-30T07:55:04.000Z">
+<meta property="article:modified_time" content="2025-01-10T12:34:22.831Z">
+<meta property="article:author" content="LETTTER">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/LETTER2418.github.io/img/background.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://github.com/LETTER2418.github.io/posts/5.html"><link rel="preconnect" href="//cdn.jsdelivr.net"><link rel="preconnect" href="//busuanzi.ibruce.info"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '聚类模型',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  isShuoshuo: false
+}</script><link rel="stylesheet" href="/css/1.css"><link rel="stylesheet" href="/css/custom.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-categories-card@1.0.0/lib/categorybar.css"><link rel="stylesheet" href="https://unpkg.zhimg.com/hexo-butterfly-footer-beautify@1.0.0/lib/runtime.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://unpkg.zhimg.com/hexo-butterfly-swiper/lib/swiper.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiperstyle.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/loading.gif" data-original="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">9</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/background.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">星の旅</span></a><a class="nav-page-title" href="/"><span class="site-name">聚类模型</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div></div><div id="nav-right"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><!--span= ' ' + _p('search.title')--></span></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></div></nav><div id="post-info"><h1 class="post-title">聚类模型</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-12-30T07:55:04.000Z" title="发表于 2024-12-30 15:55:04">2024-12-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-01-10T12:34:22.831Z" title="更新于 2025-01-10 20:34:22">2025-01-10</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%A8%A1/">数模</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">2.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="top-img" style="background-image: url(/img/background.jpg);"></div><div class="top-img gist" style="background-image: url(/img/background.jpg)"></div><article class="container post-content" id="article-container"><h1 id="聚类模型"><a href="#聚类模型" class="headerlink" title="聚类模型"></a>聚类模型</h1><h2 id="K-means-聚类"><a href="#K-means-聚类" class="headerlink" title="K-means 聚类"></a>K-means 聚类</h2><blockquote>
+<p>K-Means聚类是一种常用的无监督学习算法，用于将数据集划分为K个簇（cluster）。其目标是将相似的数据点分配到同一个簇中，同时使不同簇之间的数据点尽可能不同。</p>
+<p>基本步骤</p>
+<ul>
+<li><p>初始化</p>
+<p>选择K个初始聚类中心（centroid），可以随机选择数据集中的K个点，或通过其他方法初始化。</p>
+</li>
+<li><p>分配数据点</p>
+<p>对于每个数据点，计算其与K个聚类中心的距离（通常使用欧氏距离），并将其分配到距离最近的聚类中心所属的簇。</p>
+</li>
+<li><p>更新聚类中心</p>
+<p>对于每个簇，重新计算其聚类中心，通常取该簇中所有数据点的均值。</p>
+</li>
+<li><p>迭代</p>
+<p>重复步骤2和步骤3，直到聚类中心不再发生显著变化，或达到预定的迭代次数。</p>
+</li>
+</ul>
+</blockquote>
+<figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> KMeans</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> make_blobs</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成数据</span></span><br><span class="line">X, y = make_blobs(n_samples=<span class="number">300</span>, centers=<span class="number">4</span>, cluster_std=<span class="number">0.60</span>, random_state=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个包含两个子图的画布</span></span><br><span class="line">plt.figure(figsize=(<span class="number">12</span>, <span class="number">5</span>))  <span class="comment"># 设置画布大小</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 子图 1：原始数据</span></span><br><span class="line">plt.subplot(<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>)  <span class="comment"># 1 行 2 列，第 1 个子图</span></span><br><span class="line">plt.scatter(X[:, <span class="number">0</span>], X[:, <span class="number">1</span>], s=<span class="number">50</span>)</span><br><span class="line">plt.title(<span class="string">"Original Data"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置 K 值</span></span><br><span class="line">k = <span class="number">4</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建 KMeans 实例</span></span><br><span class="line">kmeans = KMeans(n_clusters=k)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 拟合模型</span></span><br><span class="line">kmeans.fit(X)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取聚类结果</span></span><br><span class="line">labels = kmeans.predict(X)</span><br><span class="line">centroids = kmeans.cluster_centers_</span><br><span class="line"></span><br><span class="line"><span class="comment"># 子图 2：聚类结果</span></span><br><span class="line">plt.subplot(<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>)  <span class="comment"># 1 行 2 列，第 2 个子图</span></span><br><span class="line">plt.scatter(X[:, <span class="number">0</span>], X[:, <span class="number">1</span>], c=labels, s=<span class="number">50</span>, cmap=<span class="string">'viridis'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 绘制聚类中心</span></span><br><span class="line">plt.scatter(centroids[:, <span class="number">0</span>], centroids[:, <span class="number">1</span>], c=<span class="string">'red'</span>, s=<span class="number">200</span>, alpha=<span class="number">0.75</span>, marker=<span class="string">'X'</span>)</span><br><span class="line">plt.title(<span class="string">"K-means Clustering"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示图形</span></span><br><span class="line">plt.tight_layout()  <span class="comment"># 自动调整子图间距</span></span><br><span class="line">plt.show()</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="K-means-聚类-1"><a href="#K-means-聚类-1" class="headerlink" title="K-means++ 聚类"></a>K-means++ 聚类</h2><blockquote>
+<p>传统的 K-means 算法随机选择初始质心，这可能导致算法收敛到局部最优解，或者需要更多的迭代次数才能收敛。K-means++ 通过一种更智能的方式选择初始质心，从而提高了算法的效率和结果的稳定性。</p>
+<p>从数据集中随机选择一个点作为第一个质心。对于每一个非质心点，计算它与已选质心的最短距离 。根据概率分布选择下一个质心。距离越远的点被选中的概率越大。重复这一过程，直到选出 k 个质心。</p>
+</blockquote>
+<h2 id="K-medoids"><a href="#K-medoids" class="headerlink" title="K-medoids"></a>K-medoids</h2><blockquote>
+<p>K-medoids 的目标是找到 k 个 medoids（簇中心），使得每个数据点到其所属簇的 medoid 的距离之和最小。与 K-means 不同，K-medoids 的 medoid 必须是数据集中的一个实际数据点。K-medoids 可以使用任意距离度量（如曼哈顿距离）。</p>
+<p>基本步骤</p>
+<ul>
+<li>初始化：<ul>
+<li>随机选择 k 个数据点作为初始 medoids。</li>
+</ul>
+</li>
+<li>分配数据点到簇：<ul>
+<li>对于每个数据点，将其分配到最近的 medoid 所在的簇。</li>
+</ul>
+</li>
+<li>更新 medoids：<ul>
+<li>对于每个簇，尝试用簇内的其他点替换当前的 medoid，计算替换后的总距离。</li>
+<li>如果替换后的总距离更小，则更新 medoid。</li>
+</ul>
+</li>
+<li>重复迭代：<ul>
+<li>重复步骤 2 和 3，直到 medoids 不再变化或达到最大迭代次数。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h2 id="层次聚类-Hierarchical-Clustering"><a href="#层次聚类-Hierarchical-Clustering" class="headerlink" title="层次聚类 (Hierarchical Clustering)"></a>层次聚类 (Hierarchical Clustering)</h2><blockquote>
+<p>层次聚类是一种无监督学习方法，它不需要预先指定聚类的数量，而是生成一个由层次嵌套的聚类树（称为树状图或树形图）来表示数据的聚类结构。层次聚类主要有两种方式：凝聚型（Agglomerative）和分裂型（Divisive）。</p>
+<ul>
+<li><p>凝聚型层次聚类（Agglomerative Hierarchical Clustering）</p>
+<ul>
+<li>初始化：将每个数据点视为一个单独的聚类。</li>
+<li>合并：计算每对聚类之间的距离，并合并距离最近的两个聚类。</li>
+<li>重复：重复合并步骤，直到所有数据点都合并成一个大的聚类，或者达到某个特定的停止条件。</li>
+<li>树状图：通过树状图展示聚类过程，树状图的每个节点代表一个聚类，节点的高度代表合并时的距离。</li>
+</ul>
+</li>
+<li><p>分裂型层次聚类（Divisive Hierarchical Clustering）</p>
+<ul>
+<li>初始化：将所有数据点作为一个大的聚类开始。</li>
+<li>分裂：选择一个聚类并将其分裂成两个子聚类。</li>
+<li>重复：对每个子聚类重复分裂步骤，直到每个聚类只包含一个数据点，或者达到某个特定的停止条件。</li>
+<li>树状图：通过树状图展示聚类过程，树状图的根节点代表初始的大聚类。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> scipy.cluster.hierarchy <span class="keyword">import</span> dendrogram, linkage</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> make_blobs</span><br><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> AgglomerativeClustering</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成示例数据</span></span><br><span class="line">np.random.seed(<span class="number">42</span>)</span><br><span class="line">X, _ = make_blobs(n_samples=<span class="number">50</span>, centers=<span class="number">3</span>, cluster_std=<span class="number">1.0</span>, random_state=<span class="number">42</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用Scipy的linkage函数进行层次聚类</span></span><br><span class="line">linked = linkage(X, method=<span class="string">'ward'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 绘制树状图</span></span><br><span class="line">plt.figure(figsize=(<span class="number">10</span>, <span class="number">7</span>))</span><br><span class="line">dendrogram(linked, orientation=<span class="string">'top'</span>, distance_sort=<span class="string">'descending'</span>, show_leaf_counts=<span class="literal">True</span>)</span><br><span class="line">plt.title(<span class="string">'Hierarchical Clustering Dendrogram'</span>)</span><br><span class="line">plt.xlabel(<span class="string">'Sample index'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'Distance'</span>)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用Scikit-learn的AgglomerativeClustering进行层次聚类</span></span><br><span class="line">cluster = AgglomerativeClustering(n_clusters=<span class="number">3</span>, affinity=<span class="string">'euclidean'</span>, linkage=<span class="string">'ward'</span>)</span><br><span class="line">cluster.fit_predict(X)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 绘制聚类结果</span></span><br><span class="line">plt.scatter(X[:, <span class="number">0</span>], X[:, <span class="number">1</span>], c=cluster.labels_, cmap=<span class="string">'viridis'</span>)</span><br><span class="line">plt.title(<span class="string">'Agglomerative Clustering'</span>)</span><br><span class="line">plt.xlabel(<span class="string">'Feature 1'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'Feature 2'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="DBSCAN-聚类"><a href="#DBSCAN-聚类" class="headerlink" title="DBSCAN  聚类"></a>DBSCAN  聚类</h2><blockquote>
+<p>DBSCAN是一种基于密度的聚类算法，它能够识别出任意形状的簇，并且能够将噪声点识别出来。DBSCAN算法的主要思想是，如果一个区域内的密度（即点的数量）足够高，则该区域中的点可以被归为一个簇。DBSCAN算法不需要事先指定簇的数量，因此它在处理复杂形状和大小的簇时非常有用。</p>
+<p>基本步骤</p>
+<ul>
+<li><p>初始化</p>
+<ul>
+<li>选择参数 <code>ε</code>（邻域半径）和 <code>min_samples</code>（最小点数）。</li>
+<li>将所有点标记为未访问。</li>
+</ul>
+</li>
+<li><p>遍历数据点</p>
+<ul>
+<li>对于每个未访问的点 p，检查其ε-邻域内的点数。</li>
+<li>如果 p 是核心点，则创建一个新的簇，并将 p 及其密度可达的所有点加入该簇。</li>
+<li>如果 p 是边界点或噪声点，则标记为噪声。</li>
+</ul>
+</li>
+<li><p>重复</p>
+<ul>
+<li>重复上述过程，直到所有点都被访问。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> DBSCAN</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> make_moons</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成示例数据（月牙形数据集）</span></span><br><span class="line">X, _ = make_moons(n_samples=<span class="number">300</span>, noise=<span class="number">0.05</span>, random_state=<span class="number">42</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建 DBSCAN 对象</span></span><br><span class="line">dbscan = DBSCAN(eps=<span class="number">0.3</span>, min_samples=<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 进行聚类</span></span><br><span class="line">labels = dbscan.fit_predict(X)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出聚类结果</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">"Cluster Labels:"</span>, labels)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可视化聚类结果</span></span><br><span class="line">plt.figure(figsize=(<span class="number">8</span>, <span class="number">6</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 绘制每个簇的点</span></span><br><span class="line">unique_labels = <span class="built_in">set</span>(labels)</span><br><span class="line">colors = [plt.cm.Spectral(each) <span class="keyword">for</span> each <span class="keyword">in</span> np.linspace(<span class="number">0</span>, <span class="number">1</span>, <span class="built_in">len</span>(unique_labels))]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> label, color <span class="keyword">in</span> <span class="built_in">zip</span>(unique_labels, colors):</span><br><span class="line">    <span class="keyword">if</span> label == -<span class="number">1</span>:</span><br><span class="line">        <span class="comment"># 噪声点用黑色表示</span></span><br><span class="line">        color = [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>]</span><br><span class="line">        cluster_name = <span class="string">"Noise"</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        cluster_name = <span class="string">f"Cluster <span class="subst">{label}</span>"</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 绘制属于当前簇的点</span></span><br><span class="line">    class_member_mask = (labels == label)</span><br><span class="line">    xy = X[class_member_mask]</span><br><span class="line">    plt.scatter(xy[:, <span class="number">0</span>], xy[:, <span class="number">1</span>], color=color, label=cluster_name, s=<span class="number">50</span>, edgecolors=<span class="string">'k'</span>)</span><br><span class="line"></span><br><span class="line">plt.title(<span class="string">'DBSCAN Clustering'</span>)</span><br><span class="line">plt.xlabel(<span class="string">'Feature 1'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'Feature 2'</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="OPTICS-聚类"><a href="#OPTICS-聚类" class="headerlink" title="OPTICS 聚类"></a>OPTICS 聚类</h2><blockquote>
+<p>OPTICS是一种基于密度的聚类算法，是DBSCAN算法的改进版本。与DBSCAN算法相比，OPTICS算法对输入参数（如eps和MinPts）的敏感度较低，因为它将eps参数从单个值放宽到一个范围。</p>
+<p>核心思想是通过计算每个数据点的 核心距离和可达距离，生成一个有序的可达性图。通过分析可达性图，可以识别出不同密度的簇。</p>
+</blockquote>
+<figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> OPTICS</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成示例数据</span></span><br><span class="line">np.random.seed(<span class="number">42</span>)</span><br><span class="line">X = np.random.rand(<span class="number">100</span>, <span class="number">2</span>)  <span class="comment"># 100 个二维数据点</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 OPTICS 聚类</span></span><br><span class="line">optics = OPTICS(min_samples=<span class="number">5</span>, xi=<span class="number">0.05</span>, min_cluster_size=<span class="number">0.1</span>)</span><br><span class="line">optics.fit(X)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取聚类结果</span></span><br><span class="line">labels = optics.labels_</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可视化聚类结果</span></span><br><span class="line">plt.scatter(X[:, <span class="number">0</span>], X[:, <span class="number">1</span>], c=labels, cmap=<span class="string">'viridis'</span>, s=<span class="number">50</span>, alpha=<span class="number">0.8</span>)</span><br><span class="line">plt.title(<span class="string">"OPTICS Clustering"</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="STING-聚类"><a href="#STING-聚类" class="headerlink" title="STING 聚类"></a>STING 聚类</h2><blockquote>
+<p>STING是一种基于网格的聚类算法，适用于处理大规模数据集。STING 将数据空间划分为多个网格单元，并通过统计信息（如均值、方差等）来描述每个单元中的数据分布。通过分层结构，STING 能够高效地处理数据，并且支持多分辨率聚类。<br>核心思想是将数据空间划分为多个网格单元，并构建一个分层结构（通常是四叉树或八叉树）。每个网格单元存储统计信息（如均值、方差、最小值、最大值等），通过这些信息可以快速判断单元是否属于某个簇。</p>
+</blockquote>
+<h2 id="CLIQUE-聚类"><a href="#CLIQUE-聚类" class="headerlink" title="CLIQUE 聚类"></a>CLIQUE 聚类</h2><h2 id="Gauss-混合模型"><a href="#Gauss-混合模型" class="headerlink" title="Gauss 混合模型"></a>Gauss 混合模型</h2><h2 id="模糊-C-Means"><a href="#模糊-C-Means" class="headerlink" title="模糊 C-Means"></a>模糊 C-Means</h2></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://github.com/LETTER2418.github.io">LETTTER</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://github.com/LETTER2418.github.io/posts/5.html">https://github.com/LETTER2418.github.io/posts/5.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://github.com/LETTER2418.github.io" target="_blank">星の旅</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/background.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer=""></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/7.html" title="深度学习入门"><img class="cover" src="/img/loading.gif" data-original="/img/background.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">深度学习入门</div></div><div class="info-2"><div class="info-item-1">深度学习入门感知机 感知机是具有输入和输出的算法。给定一个输入后，将输出一个既定的值。 基本结构包括输入层、权重、偏置和激活函数。 工作原理 初始化权重 计算加权和：对于每个输入特征，计算加权和 激活函数：将加权和偏置的和输入到激活函数中，得到输出。权重$w$是控制输入信号的重要性的参数，而偏置是调整神经元被激活的容易程度的参数 调整权重和偏置：根据分类结果与实际结果的差异，调整权重和偏置。权重调整公式为：$w_i=w_i+\Delta w_i$，其中$\Delta w_i=\eta(y-\hat{y})x_i$，偏置调整公式为：$b=b+\eta(y-\hat{y})$，$\eta$ 是学习率，$y$是实际结果， $\hat{y}$ 是预测结果，$x_i$是第i个输入。 重复上述步骤，直到模型在训练数据上达到满意的准确率或达到最大迭代次数。  扩展 单层感知机只能表示线性空间，而多层感知机可以表示非线性空间。  “朴素感知机”是指单层网络，指的是激活函数使用了阶跃函数的模型。“多层感知机”是指神经网络，即使用...</div></div></div></a><a class="pagination-related" href="/posts/3.html" title="分类模型"><img class="cover" src="/img/loading.gif" data-original="/img/background.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">分类模型</div></div><div class="info-2"><div class="info-item-1">分类模型 分类模型是数学建模中一种根据数据特征将数据集中的实例划分为不同类别或组的模型  逻辑回归（Logistic Regression） 逻辑回归是一种广义的线性回归分析模型，属于机器学习中的监督学习。其推导过程与计算方式类似于回归的过程，但实际上主要是用来解决二分类问题（也可以解决多分类问题）。逻辑回归通过拟合数据，预测某个事件发生的概率，并根据概率值进行分类。它的核心是通过 Sigmoid 函数将线性回归的输出映射到 [0, 1] 区间，表示概率值。  from sklearn.datasets import load_irisfrom sklearn.model_selection import train_test_splitfrom sklearn.linear_model import LogisticRegressionfrom sklearn.metrics import accuracy_score, classification_report# 加载数据集（以二分类为例）data = load_iris()X = data.data[:100, :] ...</div></div></div></a></nav><hr class="custom-hr"><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/loading.gif" data-original="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"></div><div class="author-info-name">LETTTER</div><div class="author-info-description">攀一座山 看一场雪 追一个梦</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">9</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" href="https://github.com/LETTER2418"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/LETTER2418/" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:3536761163@qq.com" target="_blank" title="Email"><i class="fas fa-envelope-open-text"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%81%9A%E7%B1%BB%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text">聚类模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#K-means-%E8%81%9A%E7%B1%BB"><span class="toc-number">1.1.</span> <span class="toc-text">K-means 聚类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#K-means-%E8%81%9A%E7%B1%BB-1"><span class="toc-number">1.2.</span> <span class="toc-text">K-means++ 聚类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#K-medoids"><span class="toc-number">1.3.</span> <span class="toc-text">K-medoids</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B1%82%E6%AC%A1%E8%81%9A%E7%B1%BB-Hierarchical-Clustering"><span class="toc-number">1.4.</span> <span class="toc-text">层次聚类 (Hierarchical Clustering)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DBSCAN-%E8%81%9A%E7%B1%BB"><span class="toc-number">1.5.</span> <span class="toc-text">DBSCAN  聚类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OPTICS-%E8%81%9A%E7%B1%BB"><span class="toc-number">1.6.</span> <span class="toc-text">OPTICS 聚类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#STING-%E8%81%9A%E7%B1%BB"><span class="toc-number">1.7.</span> <span class="toc-text">STING 聚类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CLIQUE-%E8%81%9A%E7%B1%BB"><span class="toc-number">1.8.</span> <span class="toc-text">CLIQUE 聚类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gauss-%E6%B7%B7%E5%90%88%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.9.</span> <span class="toc-text">Gauss 混合模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E7%B3%8A-C-Means"><span class="toc-number">1.10.</span> <span class="toc-text">模糊 C-Means</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/9.html" title="数据处理"><img src="/img/loading.gif" data-original="/img/background.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数据处理"></a><div class="content"><a class="title" href="/posts/9.html" title="数据处理">数据处理</a><time datetime="2025-01-18T14:24:52.000Z" title="发表于 2025-01-18 22:24:52">2025-01-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/8.html" title="绘图"><img src="/img/loading.gif" data-original="/img/background.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="绘图"></a><div class="content"><a class="title" href="/posts/8.html" title="绘图">绘图</a><time datetime="2025-01-09T04:29:48.000Z" title="发表于 2025-01-09 12:29:48">2025-01-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/6.html" title="无标题"><img src="/img/loading.gif" data-original="/img/background.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无标题"></a><div class="content"><a class="title" href="/posts/6.html" title="无标题">无标题</a><time datetime="2025-01-08T13:00:03.000Z" title="发表于 2025-01-08 21:00:03">2025-01-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/7.html" title="深度学习入门"><img src="/img/loading.gif" data-original="/img/background.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="深度学习入门"></a><div class="content"><a class="title" href="/posts/7.html" title="深度学习入门">深度学习入门</a><time datetime="2025-01-08T08:28:21.000Z" title="发表于 2025-01-08 16:28:21">2025-01-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/5.html" title="聚类模型"><img src="/img/loading.gif" data-original="/img/background.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="聚类模型"></a><div class="content"><a class="title" href="/posts/5.html" title="聚类模型">聚类模型</a><time datetime="2024-12-30T07:55:04.000Z" title="发表于 2024-12-30 15:55:04">2024-12-30</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/background.jpg);"><div id="footer-wrap"><div class="copyright">©2024 - 2025 By LETTTER</div><div class="footer_custom_text">Good Luck</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.isShuoshuo
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: '',
+      appKey: '',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><script src="/js/custom.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><script async="" data-pjax="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"></div></div><hr><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --><script data-pjax="">
+    function butterfly_categories_card_injector_config(){
+      var parent_div_git = document.getElementById('recent-posts');
+      var item_html = '<style>li.categoryBar-list-item{width:32.3%;}.categoryBar-list{max-height: 570px;overflow:auto;}.categoryBar-list::-webkit-scrollbar{width:0!important}@media screen and (max-width: 650px){.categoryBar-list{max-height: 480px;}}</style><div class="recent-post-item" style="height:auto;width:100%;padding:0px;"><div id="categoryBar"><ul class="categoryBar-list"><li class="categoryBar-list-item" style="background:url(https://ucarecdn.com/3b5dbf0b-f7df-491a-a5f4-422af37cc744/owkm6bd6.jpg);"> <a class="categoryBar-list-link" href="categories/数模/">数模</a><span class="categoryBar-list-count">8</span><span class="categoryBar-list-descr">数模</span></li><li class="categoryBar-list-item" style="background:url(https://ucarecdn.com/3b5dbf0b-f7df-491a-a5f4-422af37cc744/owkm6bd6.jpg);"> <a class="categoryBar-list-link" href="categories/深度学习/">深度学习</a><span class="categoryBar-list-count">1</span><span class="categoryBar-list-descr">深度学习</span></li></ul></div></div>';
+      console.log('已挂载butterfly_categories_card')
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      }
+    if( document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    butterfly_categories_card_injector_config()
+    }
+  </script><script data-pjax="">
+  function butterfly_footer_beautify_injector_config(){
+    var parent_div_git = document.getElementById('footer-wrap');
+    var item_html = '<div id="workboard"></div><div id="ghbdages" style="overflow:hidden;max-height:300px;height:auto;text-align:center;margin-top:10px"><div class="swiper-wrapper"><div class="swiper-slide"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" title="博客框架为Hexo_v5.4.0"><img src="/img/loading.gif" data-original="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&amp;logo=hexo" alt=""/></a><a class="github-badge" target="_blank" href="https://butterfly.js.org/" style="margin-inline:5px" title="主题版本Butterfly_v3.8.2"><img src="/img/loading.gif" data-original="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&amp;logo=bitdefender" alt=""/></a><a class="github-badge" target="_blank" href="https://www.jsdelivr.com/" style="margin-inline:5px" title="本站使用JsDelivr为静态资源提供CDN加速"><img src="/img/loading.gif" data-original="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&amp;logo=jsDelivr" alt=""/></a><a class="github-badge" target="_blank" href="https://vercel.com/" style="margin-inline:5px" title="本站采用双线部署，默认线路托管于Vercel"><img src="/img/loading.gif" data-original="https://img.shields.io/badge/Hosted-Vercel-brightgreen?style=flat&amp;logo=Vercel" alt=""/></a><a class="github-badge" target="_blank" href="https://vercel.com/" style="margin-inline:5px" title="本站采用双线部署，联通线路托管于Coding"><img src="/img/loading.gif" data-original="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&amp;logo=Codio" alt=""/></a><a class="github-badge" target="_blank" href="https://github.com/" style="margin-inline:5px" title="本站项目由Github托管"><img src="/img/loading.gif" data-original="https://img.shields.io/badge/Source-Github-d021d6?style=flat&amp;logo=GitHub" alt=""/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"><img src="/img/loading.gif" data-original="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&amp;logo=Claris" alt=""/></a></div></div></div><style>a.github-badge:hover:before {display:none}</style>';
+    console.log('已挂载butterfly_footer_beautify')
+    parent_div_git.insertAdjacentHTML("beforeend",item_html)
+    }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_footer_beautify_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_footer_beautify_injector_config();
+  }
+  </script><script async="" src="https://unpkg.zhimg.com/hexo-butterfly-footer-beautify@1.0.0/lib/runtime.js"></script><script defer="" src="https://unpkg.zhimg.com/hexo-butterfly-swiper/lib/swiper.min.js"></script><script defer="" data-pjax="" src="https://unpkg.zhimg.com/hexo-butterfly-footer-beautify/lib/swiperbdage_init.min.js"></script><script data-pjax="">
+  function butterfly_swiper_injector_config(){
+    var parent_div_git = document.getElementsByClassName('recent-posts')[0];
+    var item_html = '<div class="recent-post-item" style="height: auto;width: 100%"><div class="blog-slider swiper-container-fade swiper-container-horizontal" id="swiper_container"><div class="blog-slider__wrp swiper-wrapper" style="transition-duration: 0ms;"><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/8.html" alt=""><img width="48" height="48" src="/img/loading.gif" data-original="/img/background.jpg" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2025-01-09</span><a class="blog-slider__title" href="posts/8.html" alt="">绘图</a><div class="blog-slider__text">再怎么看我也不知道怎么描述它的啦！</div><a class="blog-slider__button" href="posts/8.html" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/4.html" alt=""><img width="48" height="48" src="/img/loading.gif" data-original="/img/background.jpg" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-12-26</span><a class="blog-slider__title" href="posts/4.html" alt="">预测模型</a><div class="blog-slider__text">再怎么看我也不知道怎么描述它的啦！</div><a class="blog-slider__button" href="posts/4.html" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/7.html" alt=""><img width="48" height="48" src="/img/loading.gif" data-original="/img/background.jpg" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2025-01-08</span><a class="blog-slider__title" href="posts/7.html" alt="">深度学习入门</a><div class="blog-slider__text">再怎么看我也不知道怎么描述它的啦！</div><a class="blog-slider__button" href="posts/7.html" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/2.html" alt=""><img width="48" height="48" src="/img/loading.gif" data-original="/img/background.jpg" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-12-26</span><a class="blog-slider__title" href="posts/2.html" alt="">评价模型</a><div class="blog-slider__text">再怎么看我也不知道怎么描述它的啦！</div><a class="blog-slider__button" href="posts/2.html" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/5.html" alt=""><img width="48" height="48" src="/img/loading.gif" data-original="/img/background.jpg" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-12-30</span><a class="blog-slider__title" href="posts/5.html" alt="">聚类模型</a><div class="blog-slider__text">再怎么看我也不知道怎么描述它的啦！</div><a class="blog-slider__button" href="posts/5.html" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/6.html" alt=""><img width="48" height="48" src="/img/loading.gif" data-original="/img/background.jpg" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2025-01-08</span><a class="blog-slider__title" href="posts/6.html" alt=""></a><div class="blog-slider__text">再怎么看我也不知道怎么描述它的啦！</div><a class="blog-slider__button" href="posts/6.html" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/1.html" alt=""><img width="48" height="48" src="/img/loading.gif" data-original="/img/background.jpg" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-12-26</span><a class="blog-slider__title" href="posts/1.html" alt="">优化模型-规划模型</a><div class="blog-slider__text">再怎么看我也不知道怎么描述它的啦！</div><a class="blog-slider__button" href="posts/1.html" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/9.html" alt=""><img width="48" height="48" src="/img/loading.gif" data-original="/img/background.jpg" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2025-01-18</span><a class="blog-slider__title" href="posts/9.html" alt="">数据处理</a><div class="blog-slider__text">再怎么看我也不知道怎么描述它的啦！</div><a class="blog-slider__button" href="posts/9.html" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="posts/3.html" alt=""><img width="48" height="48" src="/img/loading.gif" data-original="/img/background.jpg" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2024-12-26</span><a class="blog-slider__title" href="posts/3.html" alt="">分类模型</a><div class="blog-slider__text">再怎么看我也不知道怎么描述它的啦！</div><a class="blog-slider__button" href="posts/3.html" alt="">详情   </a></div></div></div><div class="blog-slider__pagination swiper-pagination-clickable swiper-pagination-bullets"></div></div></div>';
+    console.log('已挂载butterfly_swiper')
+    parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  var elist = 'undefined'.split(',');
+  var cpage = location.pathname;
+  var epage = '/';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_swiper_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_swiper_injector_config();
+  }
+  </script><script defer="" src="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.js"></script><script defer="" data-pjax="" src="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper_init.js"></script><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '1500ms');
+    arr[i].setAttribute('data-wow-delay', '0ms');
+    arr[i].setAttribute('data-wow-offset', '0');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '1500ms');
+    arr[i].setAttribute('data-wow-delay', '0ms');
+    arr[i].setAttribute('data-wow-offset', '0');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('container');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '1500ms');
+    arr[i].setAttribute('data-wow-delay', '0ms');
+    arr[i].setAttribute('data-wow-offset', '0');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script></div><script defer="" src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer="" src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow_init.js"></script><!-- hexo injector body_end end -->
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z\d\-\.\+]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(t.test(e.href)||r.test(e.href))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body></html>
